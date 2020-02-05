@@ -1,0 +1,62 @@
+DATABASE
+users: user_id, username, password, profile_pic_url
+posts: post_id, text, date, owner_user_id
+post_likes: post_id, user_id
+post_dislikes: post_id, user_id
+post_comments: comment_id, owner_user_id, text, date, edited, parent_comment
+post_comment_likes: comment_id, user_id
+post_comment_dislikes: comment_id, user_id
+
+
+API
+create_user(username, password, profile_pic_url): user_id;
+check_user(username, password): boolean;
+load_user(user_id): User;
+create_post(user_id, datetime, text): post_id;
+delete_post(post_id): status;
+load_all_posts(sortby, offset, limit): posts;
+like_post(user_id, post_id): status;
+dislike_post(user_id, post_id): status;
+comment_on_post(post_id, user_id, datetime, text, parent_comment): comment_id;
+delete_comment(comment_id): status;
+edit_comment(comment_id): status;
+like_comment(comment_id, user_id): status;
+dislike_comment(comment_id, user_id): status;
+load_comments(post_id, sortby, offset, limit): comments;
+load_replies(comment_id, offset, limit): comments;
+
+
+DATATYPES
+
+posts = array of {
+    post_id,
+    text,
+    date,
+    likes_count,
+    dislikes_count,
+    comments_count,
+    if_liked_by_user,
+    if_disliked_by_user,
+    owner: User,
+}
+
+User = {
+    user_id,
+    username,
+    profile_pic_url,
+}
+
+comments = array of {
+    comment_id,
+    text, 
+    date, 
+    edited, 
+    parent_comment,
+    likes_count,
+    dislikes_count,
+    comments_count,
+    if_liked_by_user,
+    if_disliked_by_user,
+    replies_count,
+    owner: User,
+}
