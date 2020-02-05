@@ -13,3 +13,4 @@ WHERE   p.post_id = pl.post_id (+)
 AND     p.post_id = pdl.post_id (+)
 AND     p.post_id = c.post_id (+)
 GROUP BY p.post_id
+
