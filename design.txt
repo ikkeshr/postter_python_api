@@ -3,7 +3,7 @@ users: user_id, username, password, profile_pic_url
 posts: post_id, text, date, owner_user_id
 post_likes: post_id, user_id
 post_dislikes: post_id, user_id
-post_comments: comment_id, owner_user_id, text, date, edited, parent_comment
+post_comments: comment_id, owner_user_id, post_id, text, date, edited, parent_comment
 post_comment_likes: comment_id, user_id
 post_comment_dislikes: comment_id, user_id
 
@@ -11,19 +11,19 @@ post_comment_dislikes: comment_id, user_id
 API
 create_user(username, password, profile_pic_url): user_id;
 check_user(username, password): boolean;
-load_user(user_id): User;
+fetch_user(user_id): User;
 create_post(user_id, datetime, text): post_id;
 delete_post(post_id): status;
-load_all_posts(sortby, offset, limit): posts;
+fetch_posts(user_id, offset, limit, sortby, viewer_user_id): posts;
 like_post(user_id, post_id): status;
 dislike_post(user_id, post_id): status;
-comment_on_post(post_id, user_id, datetime, text, parent_comment): comment_id;
+create_comment(post_id, owner_user_id, datetime, text, parent_comment): comment_id;
 delete_comment(comment_id): status;
-edit_comment(comment_id): status;
+edit_comment(comment_id, new_text): status;
 like_comment(comment_id, user_id): status;
 dislike_comment(comment_id, user_id): status;
-load_comments(post_id, sortby, offset, limit): comments;
-load_replies(comment_id, offset, limit): comments;
+fetch_comments(post_id, sortby, offset, limit, viewer_user_id): comments;
+fetch_replies(comment_id, offset, limit, viewer_user_id): comments;
 
 
 DATATYPES
@@ -35,8 +35,9 @@ posts = array of {
     likes_count,
     dislikes_count,
     comments_count,
-    if_liked_by_user,
-    if_disliked_by_user,
+    if_liked_by_viewer,
+    if_disliked_by_viewer,
+    if_own_by_viewer,
     owner: User,
 }
 
@@ -55,8 +56,14 @@ comments = array of {
     likes_count,
     dislikes_count,
     comments_count,
-    if_liked_by_user,
-    if_disliked_by_user,
+    if_liked_by_viewer,
+    if_disliked_by_viewer,
+    if_own_by_viewer,
     replies_count,
     owner: User,
 }
+
+
+LAYERS
+                Back end
+Front end |-> Controller -> Postter -> Database controller -> Database

@@ -35,7 +35,7 @@ from api import Postter
 # #print(result)
 
 p = Postter()
-r = p.like_post(1, 3)
+r = p.fetch_posts()
 print(r)
 
 
